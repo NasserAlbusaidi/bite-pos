@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bite POS
 
-## Getting Started
+A streamlined, browser-based Point of Sale system for restaurants.
 
-First, run the development server:
+![Bite POS](https://img.shields.io/badge/Next.js-14-black?style=flat-square&logo=next.js)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?style=flat-square&logo=typescript)
+![Supabase](https://img.shields.io/badge/Supabase-PostgreSQL-green?style=flat-square&logo=supabase)
+
+## Features
+
+- 🔐 **Owner Login** - Email/password authentication
+- 🔢 **Staff PIN Login** - Quick 4-digit PIN entry
+- 📊 **Dashboard** - Sales stats and recent orders
+- 🍔 **Menu Management** - Categories, items, and images
+- 👥 **Staff Management** - Create staff with PINs
+- 💳 **POS Terminal** - Touch-friendly order taking
+- 📋 **Order History** - Search and filter orders
+- ⚙️ **Settings** - Restaurant profile and currency
+
+## Quick Start
+
+### Prerequisites
+- Node.js 18+
+- Supabase account
+
+### Installation
 
 ```bash
+# Clone and install
+cd bite-pos
+npm install
+
+# Configure environment
+cp .env.example .env.local
+# Edit .env.local with your Supabase credentials
+
+# Run database migrations
+# Copy supabase/migrations/000_clean_reset.sql to Supabase SQL Editor
+
+# Start development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Frontend:** Next.js 14, TypeScript, Tailwind CSS
+- **Backend:** Supabase (PostgreSQL, Auth, Storage)
+- **Icons:** Lucide React
 
-## Learn More
+## Project Structure
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/
+├── app/
+│   ├── (auth)/          # Login pages
+│   ├── dashboard/       # Admin pages
+│   ├── pos/             # POS terminal
+│   └── globals.css      # Design system
+├── context/             # React contexts
+├── lib/                 # Utilities
+└── types/               # TypeScript types
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Default Credentials
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Demo Staff PIN:** `1234`
 
-## Deploy on Vercel
+## License
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
