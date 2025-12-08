@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Save, Loader2, Store } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
+import { useRestaurant } from '@/context/RestaurantContext';
 
 interface SettingsForm {
     name: string;
@@ -23,6 +24,7 @@ export default function SettingsPage() {
     const [error, setError] = useState<string | null>(null);
 
     const supabase = createClient();
+    const { refreshRestaurant } = useRestaurant();
 
     // Load restaurant data on mount
     useEffect(() => {
@@ -101,6 +103,9 @@ export default function SettingsPage() {
             if (updateError) {
                 throw updateError;
             }
+
+            // Refresh the global restaurant context so currency updates everywhere
+            await refreshRestaurant();
 
             setSaved(true);
             setTimeout(() => setSaved(false), 2000);
