@@ -62,6 +62,13 @@ export interface Order {
     daily_order_number: number;
 }
 
+// Selected Modifier Snapshot (stored in order_item JSONB)
+export interface SelectedModifierSnapshot {
+    modifier_id: string;
+    name: string;
+    price_adjustment: number;
+}
+
 // Order Item
 export interface OrderItem {
     id: string;
@@ -71,11 +78,58 @@ export interface OrderItem {
     price_snapshot: number;
     quantity: number;
     notes: string | null;
+    selected_modifiers: SelectedModifierSnapshot[];
+    modifier_total: number;
+}
+
+/* ========================================
+   MODIFIER TYPES
+   ======================================== */
+
+// Modifier Group (e.g., "Size", "Toppings", "Sugar Level")
+export interface ModifierGroup {
+    id: string;
+    restaurant_id: string;
+    name: string;
+    min_selection: number;  // 0 = optional, 1+ = required
+    max_selection: number | null;  // 1 = single choice, null = unlimited
+    sort_order: number;
+    is_active: boolean;
+    created_at: string;
+}
+
+// Modifier (e.g., "Small", "Large", "Extra Cheese")
+export interface Modifier {
+    id: string;
+    group_id: string;
+    name: string;
+    price_adjustment: number;
+    sort_order: number;
+    is_available: boolean;
+    created_at: string;
+}
+
+// Junction: Product to Modifier Group link
+export interface ProductModifierGroup {
+    id: string;
+    menu_item_id: string;
+    modifier_group_id: string;
+    created_at: string;
 }
 
 /* ========================================
    EXTENDED TYPES (with relations)
    ======================================== */
+
+// Modifier Group with its Modifiers
+export interface ModifierGroupWithModifiers extends ModifierGroup {
+    modifiers: Modifier[];
+}
+
+// Menu Item with its linked Modifier Groups
+export interface MenuItemWithModifiers extends MenuItem {
+    modifier_groups: ModifierGroupWithModifiers[];
+}
 
 // Menu Category with Items
 export interface MenuCategoryWithItems extends MenuCategory {
@@ -94,27 +148,6 @@ export interface OrderWithItems extends Order {
 }
 
 /* ========================================
-   CART TYPES (for POS)
-   ======================================== */
-
-export interface CartItem {
-    id: string; // Unique cart item ID (for duplicates with different notes)
-    item_id: string;
-    name: string;
-    price: number;
-    tax_rate: number;
-    quantity: number;
-    notes: string;
-}
-
-export interface Cart {
-    items: CartItem[];
-    subtotal: number;
-    tax: number;
-    total: number;
-}
-
-/* ========================================
    API TYPES
    ======================================== */
 
@@ -125,6 +158,7 @@ export interface CreateOrderPayload {
         item_id: string;
         quantity: number;
         notes?: string;
+        selected_modifiers?: SelectedModifierSnapshot[];
     }[];
 }
 
@@ -181,4 +215,20 @@ export interface RestaurantFormData {
     name: string;
     address: string;
     currency_symbol: string;
+}
+
+export interface ModifierGroupFormData {
+    name: string;
+    min_selection: number;
+    max_selection: number;
+    sort_order: number;
+    is_active: boolean;
+}
+
+export interface ModifierFormData {
+    name: string;
+    price_adjustment: number;
+    sort_order: number;
+    is_available: boolean;
+    group_id: string;
 }
